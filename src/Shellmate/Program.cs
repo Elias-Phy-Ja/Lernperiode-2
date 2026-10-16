@@ -1,4 +1,6 @@
-﻿Console.WriteLine();
+﻿using Shellmate.Commands;
+
+Console.WriteLine();
 Console.WriteLine("Herzlich willkommen bei Shellmate!");
 Console.WriteLine("Mit /help können Sie sich die verfügbaren Befehle anzeigen lassen.");
 Console.WriteLine();
@@ -16,28 +18,13 @@ while (isRunning)
         Console.WriteLine();
         Console.WriteLine("Dieser Input ist leer.");
         Console.WriteLine("Bitte geben Sie einen Text für Gemini ein oder einen Befehl für Shellmate.");
-        ShowHelp();
+        CommandHandler.ShowHelp();
         continue; // Zurück zum Anfang der Schleife, um eine neue Eingabe zu erhalten
     }
 
     if (input.StartsWith("/")) // Überprüfen, ob die Eingabe ein Befehl ist
     {
-        string loweredCommand = input.ToLower(); // Befehl in Kleinbuchstaben umwandeln
-
-        if (loweredCommand == "/help")
-        {
-            ShowHelp();
-        }
-        else if (loweredCommand == "/exit")
-        {
-            isRunning = false;
-            ExitProgram();
-        }
-        else
-        {
-            Console.WriteLine($"Unbekannter Befehl: {input}");
-            ShowHelp();
-        }
+        isRunning = CommandHandler.Handle(input);
     }
 
     else // wird an Gemini weitergeleitet
@@ -46,20 +33,4 @@ while (isRunning)
         Console.WriteLine("Eingabe wird als normaler Text interpretiert und an Gemini weitergeleitet.");
         Console.WriteLine();
     }
-}
-
-
-static void ShowHelp()
-{
-    Console.WriteLine();
-    Console.WriteLine("Shellmate - Verfügbare Befehle:");
-    Console.WriteLine("/help - Zeigt diese Hilfe an");
-    Console.WriteLine("/exit - Beendet das Programm");
-    Console.WriteLine();
-}
-
-static void ExitProgram()
-{
-    Console.WriteLine();
-    Console.WriteLine("Programm wird beendet...");
 }
