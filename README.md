@@ -1,7 +1,7 @@
 <div align="center">
 
 
-# KI Chatbot in Terminal
+# KI Chatbot in Terminal - Shellmate
 
 **Um schnell Antworten auf Prompts zu kriegen**
 
@@ -9,9 +9,11 @@
 </div>
 
 
-Der Chatbot soll per eigener Befehl im Terminal startbar sein. Bei 1. Nutzung soll man begleitet werden durch den Prozess einen Gemini API Key zu generieren und einzutragen.
+Shellmate soll per eigener Befehl im Terminal startbar sein. Bei 1. Nutzung soll man begleitet werden durch den Prozess einen Gemini API Key zu generieren und einzutragen.
 
 Bei 2.+ Aktivierung soll man direkt in den Chat kommen und durch ```/Commands``` spezielle Aktionen ausführen können wie z.B in Einstellungen zu kommen.
+
+>Random Number guesser als Übung unter [RandomNumber_guesser](src/Uebungen)
 
 ## Features
 
