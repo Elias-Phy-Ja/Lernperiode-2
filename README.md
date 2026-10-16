@@ -23,10 +23,14 @@ Bei 2.+ Aktivierung soll man direkt in den Chat kommen und durch ```/Commands```
 
 ## Changelog
 
+### next session
+- [ ] Create .gitignore for API keys
+- [ ] Namen finden
+- [ ] Create Plan.md
+- [ ] Ordner Struktur anlegen
+
 
 ### 16.10.2026
 - [x] Create Repository
 - [x] Create Readme
-- [ ] Create .gitignore for API keys
-- [ ] Namen finden
-- [ ] Create Plan.md
+- [x] Number guesser als Übung.
