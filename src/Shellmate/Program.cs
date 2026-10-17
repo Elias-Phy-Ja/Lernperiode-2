@@ -1,21 +1,24 @@
 ﻿using Shellmate.Commands;
 using Shellmate.Services;
+using Shellmate.Models;
+using Shellmate.UI;
 
 Console.WriteLine();
 Console.WriteLine("Herzlich willkommen bei Shellmate!");
 Console.WriteLine("Mit /help können Sie sich die verfügbaren Befehle anzeigen lassen.");
 Console.WriteLine();
 
-// API Key einmal beim Start prüfen
-string? apiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
 
-if (string.IsNullOrEmpty(apiKey)) // Fallback bei keinem gesetzten API-Key
+// Config laden, beim ersten Start den Setup Wizard starten
+AppConfig? config = ConfigService.LoadConfig();
+
+if (config == null || string.IsNullOrWhiteSpace(config.ApiKey)) // Keine Config oder kein Key
 {
-    Console.WriteLine("Fehler: GEMINI_API_KEY ist nicht gesetzt. Bitte setzen Sie die Umgebungsvariable und starten Sie das Programm neu.");
-    return; // Programm beenden
+    config = SetupWizard.Run();
 }
 
-GeminiService gemini = new GeminiService(apiKey); // Service einmal erstellen
+GeminiService gemini = new GeminiService(config.ApiKey); // Service einmal erstellen
+
 
 bool isRunning = true; // Variable, um die Schleife zu steuern
 
