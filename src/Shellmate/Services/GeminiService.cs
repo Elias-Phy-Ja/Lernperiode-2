@@ -6,35 +6,49 @@ namespace Shellmate.Services;
 
 public class GeminiService
 {
-    private readonly HttpClient client; // Schreib geschützt
-    private readonly string url; // Schreib geschützt
+    private readonly HttpClient client; // Schreibgeschützt
+    private readonly string url; // Schreibgeschützt
+    private readonly List<ChatMessage> history = new List<ChatMessage>(); // alle bisherigen Nachrichten (erstellt Liste)
 
     // Einmal beim Start: Client einrichten
     public GeminiService(AppConfig config)
     {
         client = new HttpClient();
         client.DefaultRequestHeaders.Add("x-goog-api-key", config.ApiKey); // API-Key aus Config in Header einfügen
-        url = $"https://generativelanguage.googleapis.com/v1beta/models/{config.Model}:generateContent"; //Url und Modell aus Config einfügen
+        url = $"https://generativelanguage.googleapis.com/v1beta/models/{config.Model}:generateContent"; // Url und Modell aus Config einfügen
     }
 
-    // Schickt einen Prompt an Gemini und gibt die Antwort zurück
+    //Verlauf leeren (für /clear)
+    public void ClearHistory()
+    {
+        history.Clear();
+    }
+
+    // Schickt einen Prompt mit dem ganzen Verlauf an Gemini und gibt die Antwort zurück
     public async Task<string?> AskAsync(string prompt)
     {
+        // neue Nachricht erstellen, aber noch NICHT in den Verlauf als sicherheit bei einem Netzwerk fehler
+        // nicht dass mehrere user Nachrichten ohne Antwort von Model da stehen.
+        ChatMessage userMessage = new ChatMessage { Role = "user", Text = prompt };
+
+        // Kopie vom Verlauf + neue Nachricht
+        List<ChatMessage> messagesToSend = new List<ChatMessage>(history);
+        messagesToSend.Add(userMessage);
+
         var requestBody = new
         {
-            contents = new[]
+            // aus jeder ChatMessage wird ein JSON-Eintrag mit role und parts
+            contents = messagesToSend.Select(message => new
             {
-                new
+                role = message.Role,
+                parts = new[]
                 {
-                    parts = new[]
-                    {
-                        new { text = prompt }
-                    }
+                    new { text = message.Text }
                 }
-            }
+            })
         };
 
-        string json = JsonSerializer.Serialize(requestBody); // Prompt in JSON umwandeln
+        string json = JsonSerializer.Serialize(requestBody); // Verlauf in JSON umwandeln
         StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
         HttpResponseMessage response; // vor dem try deklarieren, damit sie danach noch existiert
@@ -67,9 +81,11 @@ public class GeminiService
 
         using JsonDocument doc = JsonDocument.Parse(responseText); // JSON-Dokument parsen
 
-        try // die ganze Kette steht im try
+        string? answer; // vor dem try deklarieren (Scope)
+
+        try
         {
-            return doc.RootElement // Navigieren durch die JSON-Antwort, um den Text zu extrahieren
+            answer = doc.RootElement // Navigieren durch die JSON-Antwort, um den Text zu extrahieren
                 .GetProperty("candidates")[0]
                 .GetProperty("content")
                 .GetProperty("parts")[0]
@@ -86,6 +102,18 @@ public class GeminiService
             ShowEmptyAnswerError();
             return null;
         }
+
+        if (answer == null) // Antwort war im JSON leer
+        {
+            ShowEmptyAnswerError();
+            return null;
+        }
+
+        // erst jetzt, wo alles geklappt hat, beide Nachrichten in den Verlauf
+        history.Add(userMessage);
+        history.Add(new ChatMessage { Role = "model", Text = answer });
+
+        return answer;
     }
 
     private static void ShowEmptyAnswerError()
