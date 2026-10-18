@@ -48,7 +48,8 @@ public static class SetupWizard
 
         Console.WriteLine();
         Console.WriteLine("Vielen Dank! Der API Key wurde erfolgreich gespeichert.");
-        Console.WriteLine("Sie können nun Shellmate verwenden:");
+        Console.WriteLine("Sie können nun Shellmate verwenden.");
+        Console.WriteLine("Falls Sie eine Anleitung zur Nutzung benötigen, geben Sie /how-to-use ein.");
         Console.WriteLine();
 
         return config; // dasselbe Objekt zurückgeben

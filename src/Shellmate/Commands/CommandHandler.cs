@@ -15,6 +15,10 @@ public class CommandHandler
         {
             return ExitProgram(); // "return" ist hier um die schleife nach ExitProgram direkt zu beenden
         }
+        else if (loweredCommand == "/how-to-use")
+        {
+            HowToUse();
+        }
         else if (loweredCommand == "/help-setup")
         {
             ShowSetupHelp();
@@ -36,6 +40,7 @@ public class CommandHandler
         Console.WriteLine("/help - Zeigt diese Hilfe an");
         Console.WriteLine("/exit - Beendet das Programm");
         Console.WriteLine("/help-setup - Zeigt Hilfe für den Setup Wizard an");
+        Console.WriteLine("/how-to-use - Zeigt eine Anleitung zur Nutzung an");
         Console.WriteLine();
     }
 
@@ -54,6 +59,19 @@ public class CommandHandler
         Console.WriteLine("Dafür melden Sie sich bei Google Gemini an");
         Console.WriteLine("> https://aistudio.google.com/");
         Console.WriteLine("Generieren Sie einen neuen API-Key und kopieren Sie ihn hierher.");
+        Console.WriteLine();
+    }
+
+    public static void HowToUse()
+    {
+        Console.WriteLine();
+        Console.WriteLine("Shellmate - Anleitung zur Nutzung:");
+        Console.WriteLine();
+        Console.WriteLine("1. Geben Sie Ihren Google Gemini API-Key im Setup Wizard ein falls noch nicht getan.");
+        Console.WriteLine("2. In Shellmate können sie bei dem > Zeichen etwas eingeben.");
+        Console.WriteLine("3. Um befehle zu verwenden, geben Sie diese mit einem / davor ein.");
+        Console.WriteLine("4. Um alle befehle anzuzeigen, geben Sie /help ein.");
+        Console.WriteLine("5. Bei jedem anderen Text wird Shellmate Ihnen antworten, die auf dem Google Gemini Modell basieren.");
         Console.WriteLine();
     }
 }
