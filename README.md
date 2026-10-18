@@ -28,7 +28,7 @@ Bei 2.+ Aktivierung soll man direkt in den Chat kommen und durch `/Commands` spe
 
 ### next session
 - [x] Setup-Assistent: API Key beim 1. Start abfragen und in Config-Datei speichern (Etappe 3)
-- [ ] Chat-Verlauf, damit Gemini sich an das Gespräch erinnert (Etappe 4)
+- [x] Chat-Verlauf, damit Gemini sich an das Gespräch erinnert (Etappe 4)
 - [ ] Markdown-Ausgabe im Terminal mit Spectre.Console (Etappe 5)
 
 
@@ -40,6 +40,12 @@ Bei 2.+ Aktivierung soll man direkt in den Chat kommen und durch `/Commands` spe
 - [x] Modell aus der Config statt fest im Code
 - [x] Fehlerbehandlung bei Netzwerkfehlern und blockierten Antworten (`try`/`catch`)
 - [x] Leerzeilen in der Ausgabe vereinheitlicht
+- [x] Chat-Verlauf: Gemini erinnert sich an das Gespräch (`ChatMessage`, `history`)
+- [x] `/clear`: Verlauf und Terminal leeren, Neustart des Chats
+- [x] `/settings`: Modell und API Key ändern (ohne Neustart), Key maskiert angezeigt
+- [x] Shellmate zurücksetzen mit Bestätigung
+- [x] Chat wird nach den Einstellungen wiederhergestellt
+- [x] `/exit` funktioniert auch im Setup Wizard
 
 
 ### 16.10.2026
