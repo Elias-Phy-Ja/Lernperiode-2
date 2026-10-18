@@ -14,7 +14,7 @@ Shellmate soll per eigener Befehl im Terminal startbar sein. Bei 1. Nutzung soll
 Bei 2.+ Aktivierung soll man direkt in den Chat kommen und durch `/Commands` spezielle Aktionen ausführen können wie z.B in Einstellungen zu kommen.
 
 > [!NOTE]
-> Random Number guesser als Übung unter [RandomNumber_guesser](src/Uebungen)
+> Random Number guesser als Übung unter [Uebungen](src/Uebungen)
 
 ## Features
 
