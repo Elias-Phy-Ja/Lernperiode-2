@@ -58,7 +58,7 @@ public class CommandHandler
         Console.WriteLine("Sie benötigen einen API Key von Google Gemini, um Shellmate nutzen zu können.");
         Console.WriteLine("Dafür melden Sie sich bei Google Gemini an");
         Console.WriteLine("> https://aistudio.google.com/");
-        Console.WriteLine("Generieren Sie einen neuen API-Key und kopieren Sie ihn hierher.");
+        Console.WriteLine("Generieren Sie einen neuen API-Key und geben Sie ihn im Setup Wizard ein.");
         Console.WriteLine();
     }
 
@@ -68,10 +68,10 @@ public class CommandHandler
         Console.WriteLine("Shellmate - Anleitung zur Nutzung:");
         Console.WriteLine();
         Console.WriteLine("1. Geben Sie Ihren Google Gemini API-Key im Setup Wizard ein falls noch nicht getan.");
-        Console.WriteLine("2. In Shellmate können sie bei dem > Zeichen etwas eingeben.");
+        Console.WriteLine("2. In Shellmate können Sie bei dem > Zeichen etwas eingeben.");
         Console.WriteLine("3. Um befehle zu verwenden, geben Sie diese mit einem / davor ein.");
-        Console.WriteLine("4. Um alle befehle anzuzeigen, geben Sie /help ein.");
-        Console.WriteLine("5. Bei jedem anderen Text wird Shellmate Ihnen antworten, die auf dem Google Gemini Modell basieren.");
+        Console.WriteLine("4. Um alle Befehle anzuzeigen, geben Sie /help ein.");
+        Console.WriteLine("5. Auf jeden anderen Text antwortet Shellmate mit Hilfe von Google Gemini.");
         Console.WriteLine();
     }
 }

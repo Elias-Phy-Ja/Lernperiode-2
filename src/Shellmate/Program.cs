@@ -17,7 +17,7 @@ if (config == null || string.IsNullOrWhiteSpace(config.ApiKey)) // Keine Config 
     config = SetupWizard.Run();
 }
 
-GeminiService gemini = new GeminiService(config.ApiKey); // Service einmal erstellen
+GeminiService gemini = new GeminiService(config); // Service einmal erstellen
 
 
 bool isRunning = true; // Variable, um die Schleife zu steuern
