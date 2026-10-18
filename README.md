@@ -27,9 +27,19 @@ Bei 2.+ Aktivierung soll man direkt in den Chat kommen und durch `/Commands` spe
 ## Changelog
 
 ### next session
-- [ ] Setup-Assistent: API Key beim 1. Start abfragen und in Config-Datei speichern (Etappe 3)
+- [x] Setup-Assistent: API Key beim 1. Start abfragen und in Config-Datei speichern (Etappe 3)
 - [ ] Chat-Verlauf, damit Gemini sich an das Gespräch erinnert (Etappe 4)
 - [ ] Markdown-Ausgabe im Terminal mit Spectre.Console (Etappe 5)
+
+
+### 18.10.2026
+- [x] `AppConfig` (Model + ApiKey) als JSON in `%APPDATA%\Shellmate\config.json`
+- [x] `ConfigService` zum Laden und Speichern der Config
+- [x] Setup Wizard beim ersten Start (inkl. `/help-setup`)
+- [x] Neue Befehle `/help-setup` und `/how-to-use`
+- [x] Modell aus der Config statt fest im Code
+- [x] Fehlerbehandlung bei Netzwerkfehlern und blockierten Antworten (`try`/`catch`)
+- [x] Leerzeilen in der Ausgabe vereinheitlicht
 
 
 ### 16.10.2026
