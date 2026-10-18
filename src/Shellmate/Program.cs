@@ -49,7 +49,7 @@ while (isRunning)
         if (answer != null)
         {
             Console.WriteLine();
-            Console.WriteLine(answer);
+            Console.WriteLine(answer.Trim());
             Console.WriteLine();
         }
     }

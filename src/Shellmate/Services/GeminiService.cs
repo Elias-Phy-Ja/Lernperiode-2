@@ -43,7 +43,7 @@ public class GeminiService
             Console.WriteLine();
             Console.WriteLine($"Fehler: {response.StatusCode}");
             Console.WriteLine("Leider konnte die Anfrage nicht erfolgreich verarbeitet werden.");
-            Console.WriteLine($"Details: {errorMessage}");
+            Console.WriteLine($"Details: {errorMessage.Trim()}");
             Console.WriteLine();
             return null;
         }

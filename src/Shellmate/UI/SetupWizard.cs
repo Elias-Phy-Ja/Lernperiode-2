@@ -11,14 +11,13 @@ public static class SetupWizard
         bool CorrectAPIKey = false; // Variable, um zu überprüfen, ob der API Key korrekt ist
         string APIKey = ""; // Variable, um den API Key zu speichern
 
-        Console.WriteLine();
         Console.WriteLine("Willkommen zum Shellmate Setup Wizard!");
         Console.WriteLine("Bitte geben Sie Ihren Google Gemini API Key ein, um fortzufahren.");
         Console.WriteLine("Falls Sie Hilfe benötigen, geben Sie /help-setup ein.");
+        Console.WriteLine();
 
         do
         {
-            Console.WriteLine();
             Console.Write("API Key: ");
             APIKey = Console.ReadLine()?.Trim() ?? ""; // Bei null wird ein leerer Text verwendet
 
@@ -27,6 +26,7 @@ public static class SetupWizard
                 Console.WriteLine();
                 Console.WriteLine("Dieser Input ist leer.");
                 Console.WriteLine("Bitte geben Sie den API Key ein oder /help-setup für weitere Informationen.");
+                Console.WriteLine();
             }
             else if (APIKey.StartsWith("/")) // Überprüfen, ob die Eingabe ein Befehl ist
             {
@@ -36,6 +36,7 @@ public static class SetupWizard
             {
                 Console.WriteLine();
                 Console.WriteLine("Der eingegebene API Key ist zu kurz. Bitte überprüfen Sie den Key und versuchen Sie es erneut.");
+                Console.WriteLine();
             }
             else // Key ist lang genug
             {
