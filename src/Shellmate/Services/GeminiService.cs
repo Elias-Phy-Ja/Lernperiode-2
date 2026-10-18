@@ -7,13 +7,21 @@ namespace Shellmate.Services;
 public class GeminiService
 {
     private readonly HttpClient client; // Schreibgeschützt
-    private readonly string url; // Schreibgeschützt
+    private string url = ""; // nicht readonly, weil ApplyConfig die URL später ändern kann
     private readonly List<ChatMessage> history = new List<ChatMessage>(); // alle bisherigen Nachrichten (erstellt Liste)
+    public IReadOnlyList<ChatMessage> History => history; // Verlauf nur lesbar nach aussen
 
     // Einmal beim Start: Client einrichten
     public GeminiService(AppConfig config)
     {
         client = new HttpClient();
+        ApplyConfig(config); // Key und Modell übernehmen
+    }
+
+    // Übernimmt Key und Modell aus der Config (beim Start und nach Änderungen in /settings)
+    public void ApplyConfig(AppConfig config)
+    {
+        client.DefaultRequestHeaders.Remove("x-goog-api-key"); // alten Key entfernen (falls vorhanden)
         client.DefaultRequestHeaders.Add("x-goog-api-key", config.ApiKey); // API-Key aus Config in Header einfügen
         url = $"https://generativelanguage.googleapis.com/v1beta/models/{config.Model}:generateContent"; // Url und Modell aus Config einfügen
     }
@@ -61,6 +69,7 @@ public class GeminiService
         {
             Console.WriteLine();
             Console.WriteLine("Netzwerkfehler: Es konnte keine Verbindung zur Google Gemini API hergestellt werden.");
+            Console.WriteLine();
             Console.WriteLine($"Details: {e.Message}");
             Console.WriteLine();
             return null;
@@ -72,6 +81,7 @@ public class GeminiService
             Console.WriteLine();
             Console.WriteLine($"Fehler: {response.StatusCode}");
             Console.WriteLine("Leider konnte die Anfrage nicht erfolgreich verarbeitet werden.");
+            Console.WriteLine();
             Console.WriteLine($"Details: {errorMessage.Trim()}");
             Console.WriteLine();
             return null;

@@ -30,7 +30,12 @@ public static class SetupWizard
             }
             else if (APIKey.StartsWith("/")) // Überprüfen, ob die Eingabe ein Befehl ist
             {
-                CommandHandler.Handle(APIKey); // Befehl verarbeiten
+                bool keepRunning = CommandHandler.Handle(APIKey); // Befehl verarbeiten und Rückgabewert auffangen
+
+                if (!keepRunning) // bei /exit gibt Handle false zurück
+                {
+                    Environment.Exit(0); // Programm sofort beenden
+                }
             }
             else if (APIKey.Length < 20) // Überprüfen, ob der API Key zu kurz ist
             {

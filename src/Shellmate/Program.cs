@@ -38,7 +38,7 @@ while (isRunning)
 
     if (input.StartsWith("/")) // Überprüfen, ob die Eingabe ein Befehl ist
     {
-        isRunning = CommandHandler.Handle(input, gemini);
+        isRunning = CommandHandler.Handle(input, gemini, config);
     }
 
     else // wird an Gemini weitergeleitet

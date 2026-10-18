@@ -26,5 +26,13 @@ public class ConfigService
         string json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
         File.WriteAllText(ConfigFilePath, json); // Konfiguration in die Datei schreiben
     }
-}
 
+    // Löscht die Config-Datei (für "Shellmate zurücksetzen")
+    public static void DeleteConfig()
+    {
+        if (File.Exists(ConfigFilePath))
+        {
+            File.Delete(ConfigFilePath);
+        }
+    }
+}
