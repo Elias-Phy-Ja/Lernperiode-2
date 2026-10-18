@@ -1,9 +1,10 @@
+using Shellmate.Services;
 namespace Shellmate.Commands;
 
 public class CommandHandler
 {
 
-    public static bool Handle(string command)
+    public static bool Handle(string command, GeminiService? gemini = null)
     {
         string loweredCommand = command.ToLower(); // Befehl in Kleinbuchstaben umwandeln
 
@@ -23,6 +24,10 @@ public class CommandHandler
         {
             ShowSetupHelp();
         }
+        else if (loweredCommand == "/clear")
+        {
+            ClearChat(gemini); // gemini weitergeben
+        }
         else
         {
             Console.WriteLine();
@@ -33,6 +38,14 @@ public class CommandHandler
         return true; // Gibt true zurück, um isRunning in Programm.cs zu setzen
     }
 
+    public static void ShowWelcome()
+    {
+        Console.WriteLine();
+        Console.WriteLine("Herzlich willkommen bei Shellmate!");
+        Console.WriteLine("Mit /help können Sie sich die verfügbaren Befehle anzeigen lassen.");
+        Console.WriteLine();
+    }
+
     public static void ShowHelp()
     {
         Console.WriteLine();
@@ -41,6 +54,7 @@ public class CommandHandler
         Console.WriteLine("/exit - Beendet das Programm");
         Console.WriteLine("/help-setup - Zeigt Hilfe für den Setup Wizard an");
         Console.WriteLine("/how-to-use - Zeigt eine Anleitung zur Nutzung an");
+        Console.WriteLine("/clear - Löscht den Chatverlauf und startet einen neuen Chat");
         Console.WriteLine();
     }
 
@@ -73,5 +87,23 @@ public class CommandHandler
         Console.WriteLine("4. Um alle Befehle anzuzeigen, geben Sie /help ein.");
         Console.WriteLine("5. Auf jeden anderen Text antwortet Shellmate mit Hilfe von Google Gemini.");
         Console.WriteLine();
+    }
+
+    public static void ClearChat(GeminiService? gemini)
+    {
+        if (gemini == null) // im Setup Wizard gibt es noch kein gemini
+        {
+            Console.WriteLine();
+            Console.WriteLine("Dieser Befehl ist erst im Chat verfügbar!");
+            Console.WriteLine();
+        }
+        else
+        {
+            Console.WriteLine();
+            Console.WriteLine("Verlauf wird gelöscht...");
+            gemini.ClearHistory();
+            Console.Clear();
+            ShowWelcome();
+        }
     }
 }

@@ -3,10 +3,9 @@ using Shellmate.Services;
 using Shellmate.Models;
 using Shellmate.UI;
 
-Console.WriteLine();
-Console.WriteLine("Herzlich willkommen bei Shellmate!");
-Console.WriteLine("Mit /help können Sie sich die verfügbaren Befehle anzeigen lassen.");
-Console.WriteLine();
+
+Console.Clear();
+CommandHandler.ShowWelcome();
 
 
 // Config laden, beim ersten Start den Setup Wizard starten
@@ -39,7 +38,7 @@ while (isRunning)
 
     if (input.StartsWith("/")) // Überprüfen, ob die Eingabe ein Befehl ist
     {
-        isRunning = CommandHandler.Handle(input);
+        isRunning = CommandHandler.Handle(input, gemini);
     }
 
     else // wird an Gemini weitergeleitet
