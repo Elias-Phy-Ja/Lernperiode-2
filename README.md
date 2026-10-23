@@ -16,6 +16,55 @@ Bei 2.+ Aktivierung soll man direkt in den Chat kommen und durch `/Commands` spe
 > [!NOTE]
 > Random Number guesser als Übung unter [Uebungen](src/Uebungen)
 
+## Installation (Windows)
+
+Im **CMD** oder in der **PowerShell** diesen Befehl einfügen:
+
+```
+powershell -c "irm https://raw.githubusercontent.com/Elias-Phy-Ja/Lernperiode-2/main/install.ps1 | iex"
+```
+
+Danach ein **neues** Terminal öffnen und starten mit:
+
+```
+shellmate
+```
+
+Beim ersten Start fragt Shellmate nach einem **Gemini API Key**. Den gibt es gratis auf [aistudio.google.com](https://aistudio.google.com/) → *Get API key*.
+
+- **Aktualisieren:** den Installationsbefehl einfach nochmal ausführen
+- **Version anzeigen:** `shellmate --version`
+- **Entfernen:**
+  ```
+  powershell -c "irm https://raw.githubusercontent.com/Elias-Phy-Ja/Lernperiode-2/main/uninstall.ps1 | iex"
+  ```
+
+> [!NOTE]
+> Es muss nichts zusätzlich installiert werden, `shellmate.exe` enthält alles, was es braucht (auch .NET).
+
+> [!CAUTION]
+> Der API Key wird nur lokal unter `%APPDATA%\Shellmate\config.json` gespeichert und nie ins Repository committet.
+
+## Befehle
+
+| Befehl | Was es macht |
+|---|---|
+| `/help` | Zeigt alle Befehle |
+| `/clear` | Löscht den Verlauf und startet einen neuen Chat |
+| `/settings` | Modell oder API Key ändern, Shellmate zurücksetzen |
+| `/how-to-use` | Kurze Anleitung |
+| `/help-setup` | Hilfe zum API Key |
+| `/exit` | Beendet Shellmate |
+
+## Neue Version veröffentlichen (für mich)
+
+```
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+GitHub Actions baut dann automatisch `shellmate.exe` und erstellt ein Release (siehe `.github/workflows/release.yml`).
+
 ## Features
 
 - KI Chat Bot im Terminal
@@ -29,9 +78,18 @@ Bei 2.+ Aktivierung soll man direkt in den Chat kommen und durch `/Commands` spe
 ### next session
 - [x] Setup-Assistent: API Key beim 1. Start abfragen und in Config-Datei speichern (Etappe 3)
 - [x] Chat-Verlauf, damit Gemini sich an das Gespräch erinnert (Etappe 4)
-- [ ] Markdown-Ausgabe im Terminal mit Spectre.Console (Etappe 5)
+- [x] Markdown-Ausgabe im Terminal mit Spectre.Console (Etappe 5)
 - [ ] `HTTPS` Transfer
 
+
+### 23.10.2026
+- [x] Markdown-Ausgabe mit Spectre.Console: Überschriften, fett/kursiv, Listen, Codeblöcke im Rahmen, Tabellen (`MarkdownRenderer`)
+- [x] Spinner „Shellmate denkt nach...“ während auf Gemini gewartet wird
+- [x] Verständliche Fehlermeldungen statt rohem JSON (`GeminiException`)
+- [x] Eingabe in Blau
+- [x] Shellmate als Befehl `shellmate` startbar (eigene `.exe`, `--version`)
+- [x] Installation mit einem Befehl (`install.ps1`), Deinstallation (`uninstall.ps1`)
+- [x] Automatische Releases mit GitHub Actions
 
 ### 18.10.2026
 - [x] `AppConfig` (Model + ApiKey) als JSON in `%APPDATA%\Shellmate\config.json`

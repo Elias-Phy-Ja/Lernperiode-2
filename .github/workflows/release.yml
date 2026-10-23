@@ -1,0 +1,49 @@
+# Baut automatisch shellmate.exe und veröffentlicht sie als GitHub Release,
+# sobald ein Versions-Tag gepusht wird, z.B.:
+#   git tag v1.0.0
+#   git push origin v1.0.0
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write   # nötig, um ein Release zu erstellen
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Code holen
+        uses: actions/checkout@v4
+
+      - name: .NET installieren
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: shellmate.exe bauen (eine Datei, läuft ohne installiertes .NET)
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          dotnet publish src/Shellmate/Shellmate.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:EnableCompressionInSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:Version=$version `
+            -o out
+
+      - name: GitHub Release erstellen
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" out/shellmate.exe install.ps1 uninstall.ps1 `
+            --title "Shellmate ${{ github.ref_name }}" `
+            --notes-from-tag

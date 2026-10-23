@@ -5,6 +5,14 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <!-- Name der .exe -> im Terminal startet man Shellmate mit "shellmate" -->
+    <AssemblyName>shellmate</AssemblyName>
+    <RootNamespace>Shellmate</RootNamespace>
+    <Version>1.0.0</Version>
+    <Product>Shellmate</Product>
+    <Authors>Elias Wyss</Authors>
+    <Description>KI-Chatbot im Terminal mit Google Gemini</Description>
   </PropertyGroup>
 
   <ItemGroup>

@@ -7,6 +7,13 @@ using Spectre.Console;
 Console.OutputEncoding = System.Text.Encoding.UTF8; // damit Sonderzeichen wie • richtig angezeigt werden
 _ = AnsiConsole.Profile; // aktiviert Farb-Codes (ANSI) auch in älteren Windows-Konsolen
 
+// "shellmate --version" zeigt nur die Version an
+if (args.Contains("--version") || args.Contains("-v"))
+{
+    Console.WriteLine($"Shellmate {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3)}");
+    return;
+}
+
 Console.Clear();
 CommandHandler.ShowWelcome();
 
