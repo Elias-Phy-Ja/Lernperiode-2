@@ -34,7 +34,7 @@ Beim ersten Start fragt Shellmate nach einem **Gemini API Key**. Den gibt es gra
 
 - **Aktualisieren:** den Installationsbefehl einfach nochmal ausführen
 - **Version anzeigen:** `shellmate --version`
-- **Entfernen:**
+- ## Shellmate löschen:
   ```
   powershell -c "irm https://raw.githubusercontent.com/Elias-Phy-Ja/Lernperiode-2/main/uninstall.ps1 | iex"
   ```
@@ -43,7 +43,7 @@ Beim ersten Start fragt Shellmate nach einem **Gemini API Key**. Den gibt es gra
 > Es muss nichts zusätzlich installiert werden, `shellmate.exe` enthält alles, was es braucht (auch .NET).
 
 > [!CAUTION]
-> Der API Key wird nur lokal unter `%APPDATA%\Shellmate\config.json` gespeichert und nie ins Repository committet.
+> Der API Key wird nur lokal unter `%APPDATA%\Shellmate\config.json` gespeichert und nie in ein Repository committet.
 
 ## Befehle
 
