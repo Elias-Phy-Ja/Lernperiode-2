@@ -8,6 +8,7 @@ public class GeminiService
 {
     private readonly HttpClient client; // Schreibgeschützt
     private string url = ""; // nicht readonly, weil ApplyConfig die URL später ändern kann
+    private string model = ""; // aktuelles Modell, für verständliche Fehlermeldungen
     private readonly List<ChatMessage> history = new List<ChatMessage>(); // alle bisherigen Nachrichten (erstellt Liste)
     public IReadOnlyList<ChatMessage> History => history; // Verlauf nur lesbar nach aussen
 
@@ -15,6 +16,7 @@ public class GeminiService
     public GeminiService(AppConfig config)
     {
         client = new HttpClient();
+        client.Timeout = TimeSpan.FromSeconds(90); // nicht ewig warten, falls Gemini hängt
         ApplyConfig(config); // Key und Modell übernehmen
     }
 
@@ -23,6 +25,7 @@ public class GeminiService
     {
         client.DefaultRequestHeaders.Remove("x-goog-api-key"); // alten Key entfernen (falls vorhanden)
         client.DefaultRequestHeaders.Add("x-goog-api-key", config.ApiKey); // API-Key aus Config in Header einfügen
+        model = config.Model;
         url = $"https://generativelanguage.googleapis.com/v1beta/models/{config.Model}:generateContent"; // Url und Modell aus Config einfügen
     }
 
@@ -32,8 +35,10 @@ public class GeminiService
         history.Clear();
     }
 
-    // Schickt einen Prompt mit dem ganzen Verlauf an Gemini und gibt die Antwort zurück
-    public async Task<string?> AskAsync(string prompt)
+    // Schickt einen Prompt mit dem ganzen Verlauf an Gemini und gibt die Antwort zurück.
+    // Geht etwas schief, wird eine GeminiException mit einer verständlichen Meldung geworfen.
+    // Der Service gibt selbst nichts aus, das macht Program.cs (wegen dem Spinner).
+    public async Task<string> AskAsync(string prompt)
     {
         // neue Nachricht erstellen, aber noch NICHT in den Verlauf als sicherheit bei einem Netzwerk fehler
         // nicht dass mehrere user Nachrichten ohne Antwort von Model da stehen.
@@ -65,26 +70,19 @@ public class GeminiService
         {
             response = await client.PostAsync(url, content);
         }
-        catch (HttpRequestException e) // Fallback bei Netzwerkproblemen
+        catch (HttpRequestException) // kein Internet, DNS-Problem, ...
         {
-            Console.WriteLine();
-            Console.WriteLine("Netzwerkfehler: Es konnte keine Verbindung zur Google Gemini API hergestellt werden.");
-            Console.WriteLine();
-            Console.WriteLine($"Details: {e.Message}");
-            Console.WriteLine();
-            return null;
+            throw new GeminiException("Keine Verbindung zu Google Gemini. Bitte überprüfen Sie Ihre Internetverbindung.");
+        }
+        catch (TaskCanceledException) // Timeout
+        {
+            throw new GeminiException("Gemini hat zu lange nicht geantwortet. Bitte versuchen Sie es nochmal.");
         }
 
-        if (!response.IsSuccessStatusCode) // Fallback bei Errors
+        if (!response.IsSuccessStatusCode) // Fehler von Google -> verständliche Meldung
         {
-            string errorMessage = await response.Content.ReadAsStringAsync();
-            Console.WriteLine();
-            Console.WriteLine($"Fehler: {response.StatusCode}");
-            Console.WriteLine("Leider konnte die Anfrage nicht erfolgreich verarbeitet werden.");
-            Console.WriteLine();
-            Console.WriteLine($"Details: {errorMessage.Trim()}");
-            Console.WriteLine();
-            return null;
+            string errorBody = await response.Content.ReadAsStringAsync();
+            throw new GeminiException(TranslateError((int)response.StatusCode, errorBody));
         }
 
         string responseText = await response.Content.ReadAsStringAsync(); // Antworttext auslesen
@@ -102,21 +100,14 @@ public class GeminiService
                 .GetProperty("text")
                 .GetString();
         }
-        catch (KeyNotFoundException) // ein Feld fehlt
+        catch (Exception e) when (e is KeyNotFoundException || e is IndexOutOfRangeException) // Feld fehlt oder Liste leer
         {
-            ShowEmptyAnswerError();
-            return null;
-        }
-        catch (IndexOutOfRangeException) // eine Liste ist leer
-        {
-            ShowEmptyAnswerError();
-            return null;
+            answer = null;
         }
 
-        if (answer == null) // Antwort war im JSON leer
+        if (string.IsNullOrWhiteSpace(answer)) // keine Antwort, meistens blockiert
         {
-            ShowEmptyAnswerError();
-            return null;
+            throw new GeminiException("Gemini hat keine Antwort geliefert. Möglicherweise wurde die Anfrage blockiert. Versuchen Sie es mit einer anderen Formulierung.");
         }
 
         // erst jetzt, wo alles geklappt hat, beide Nachrichten in den Verlauf
@@ -126,11 +117,22 @@ public class GeminiService
         return answer;
     }
 
-    private static void ShowEmptyAnswerError()
+    // Macht aus dem HTTP-Statuscode eine Meldung, mit der der Benutzer etwas anfangen kann
+    private string TranslateError(int statusCode, string errorBody)
     {
-        Console.WriteLine();
-        Console.WriteLine("Fehler: Gemini hat keine Antwort geliefert.");
-        Console.WriteLine("Möglicherweise wurde die Anfrage blockiert. Versuchen Sie es mit einer anderen Formulierung.");
-        Console.WriteLine();
+        if (errorBody.Contains("API_KEY_INVALID") || errorBody.Contains("API key not valid"))
+        {
+            return "Der API Key ist ungültig. Ändern Sie ihn mit /settings.";
+        }
+
+        return statusCode switch
+        {
+            400 => "Die Anfrage wurde von Gemini abgelehnt. Versuchen Sie es mit einer anderen Formulierung oder starten Sie mit /clear neu.",
+            401 or 403 => "Zugriff verweigert. Überprüfen Sie Ihren API Key mit /settings.",
+            404 => $"Das Modell \"{model}\" wurde nicht gefunden. Ändern Sie es mit /settings.",
+            429 => "Zu viele Anfragen oder das Gratis-Kontingent ist aufgebraucht. Warten Sie kurz und versuchen Sie es nochmal.",
+            >= 500 => "Gemini ist gerade überlastet oder nicht erreichbar. Versuchen Sie es in ein paar Sekunden nochmal.",
+            _ => $"Unerwarteter Fehler von Gemini (Code {statusCode})."
+        };
     }
 }

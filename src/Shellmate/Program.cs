@@ -2,7 +2,10 @@
 using Shellmate.Services;
 using Shellmate.Models;
 using Shellmate.UI;
+using Spectre.Console;
 
+Console.OutputEncoding = System.Text.Encoding.UTF8; // damit Sonderzeichen wie • richtig angezeigt werden
+_ = AnsiConsole.Profile; // aktiviert Farb-Codes (ANSI) auch in älteren Windows-Konsolen
 
 Console.Clear();
 CommandHandler.ShowWelcome();
@@ -24,8 +27,9 @@ bool isRunning = true; // Variable, um die Schleife zu steuern
 
 while (isRunning)
 {
-    Console.Write("> ");
+    Console.Write("\x1b[38;5;39m> "); // ab hier alles blau (auch was der Benutzer tippt)
     string? input = Console.ReadLine()?.Trim(); // Eingabe lesen und trimmen
+    Console.Write("\x1b[0m"); // Farbe zurücksetzen
 
     if (string.IsNullOrWhiteSpace(input)) // Fallback wenn input leer ist
     {
@@ -43,12 +47,22 @@ while (isRunning)
 
     else // wird an Gemini weitergeleitet
     {
-        string? answer = await gemini.AskAsync(input);
+        try
+        {
+            // Spinner anzeigen, solange auf Gemini gewartet wird
+            string answer = await AnsiConsole.Status()
+                .Spinner(Spinner.Known.Dots)
+                .SpinnerStyle(Style.Parse("deepskyblue1")) // gleiche Farbe wie der Input
+                .StartAsync("Shellmate denkt nach...", async ctx => await gemini.AskAsync(input));
 
-        if (answer != null)
+            Console.WriteLine();
+            MarkdownRenderer.Render(answer.Trim()); // Markdown schön ausgeben
+            Console.WriteLine();
+        }
+        catch (GeminiException e) // verständliche Fehlermeldung in Rot
         {
             Console.WriteLine();
-            Console.WriteLine(answer.Trim());
+            AnsiConsole.MarkupLine($"[red]Fehler:[/] {Markup.Escape(e.Message)}");
             Console.WriteLine();
         }
     }

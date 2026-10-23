@@ -135,12 +135,12 @@ public class CommandHandler
         {
             if (message.Role == "user")
             {
-                Console.WriteLine($"> {message.Text}"); // so wie es beim Tippen aussah
+                Console.WriteLine($"\x1b[38;5;39m> {message.Text}\x1b[0m"); // blau, so wie es beim Tippen aussah
             }
             else if (message.Role == "model")
             {
                 Console.WriteLine();
-                Console.WriteLine(message.Text.Trim()); // so wie in Program.cs
+                MarkdownRenderer.Render(message.Text.Trim()); // so wie in Program.cs
                 Console.WriteLine();
             }
         }
