@@ -18,10 +18,10 @@ Bei 2.+ Aktivierung soll man direkt in den Chat kommen und durch `/Commands` spe
 
 ## Installation (Windows)
 
-Im **CMD** oder in der **PowerShell** diesen Befehl einfügen:
+Im **CMD** oder in der **PowerShell**:
 
 ```
-powershell -c "irm https://raw.githubusercontent.com/Elias-Phy-Ja/Lernperiode-2/main/install.ps1 | iex"
+winget install shellmate
 ```
 
 Danach ein **neues** Terminal öffnen und starten mit:
@@ -32,19 +32,17 @@ shellmate
 
 Beim ersten Start fragt Shellmate nach einem **Gemini API Key**. Den gibt es gratis auf [aistudio.google.com](https://aistudio.google.com/) → *Get API key*.
 
-- **Aktualisieren:** den Installationsbefehl einfach nochmal ausführen
-- **Version anzeigen:** `shellmate --version`
-
-## Shellmate löschen:
-  ```
-  powershell -c "irm https://raw.githubusercontent.com/Elias-Phy-Ja/Lernperiode-2/main/uninstall.ps1 | iex"
-  ```
+| | Befehl |
+|---|---|
+| Aktualisieren | `winget upgrade shellmate` |
+| Entfernen | `winget uninstall shellmate` |
+| Version anzeigen | `shellmate --version` |
 
 > [!NOTE]
-> Es muss nichts zusätzlich installiert werden, `shellmate.exe` enthält alles, was es braucht (auch .NET).
+> Die Freigabe im offiziellen Windows-Paketmanager (winget) läuft noch. Bis dahin: `shellmate.exe` unter [Releases](https://github.com/Elias-Phy-Ja/Lernperiode-2/releases) herunterladen und starten. Es muss nichts zusätzlich installiert werden, die Datei enthält alles (auch .NET).
 
 > [!CAUTION]
-> Der API Key wird nur lokal unter `%APPDATA%\Shellmate\config.json` gespeichert und nie in ein Repository committet.
+> Der API Key wird nur lokal unter `%APPDATA%\Shellmate\config.json` gespeichert und nie ins Repository committet.
 
 ## Befehle
 
@@ -65,6 +63,12 @@ git push origin v1.0.0
 ```
 
 GitHub Actions baut dann automatisch `shellmate.exe` und erstellt ein Release (siehe `.github/workflows/release.yml`).
+
+Danach das winget-Paket aktualisieren (neue Version, Link und Prüfsumme werden automatisch eingetragen):
+
+```
+wingetcreate update EliasWyss.Shellmate --version 1.0.2 --urls https://github.com/Elias-Phy-Ja/Lernperiode-2/releases/download/v1.0.2/shellmate.exe --submit
+```
 
 ## Features
 
@@ -89,7 +93,8 @@ GitHub Actions baut dann automatisch `shellmate.exe` und erstellt ein Release (s
 - [x] Verständliche Fehlermeldungen statt rohem JSON (`GeminiException`)
 - [x] Eingabe in Blau
 - [x] Shellmate als Befehl `shellmate` startbar (eigene `.exe`, `--version`)
-- [x] Installation mit einem Befehl (`install.ps1`), Deinstallation (`uninstall.ps1`)
+- [x] Veröffentlichung im Windows-Paketmanager eingereicht (`winget install shellmate`)
+- [x] MIT-Lizenz
 - [x] Automatische Releases mit GitHub Actions
 
 ### 18.10.2026

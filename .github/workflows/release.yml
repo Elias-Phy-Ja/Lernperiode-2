@@ -44,6 +44,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "${{ github.ref_name }}" out/shellmate.exe install.ps1 uninstall.ps1 `
+          gh release create "${{ github.ref_name }}" out/shellmate.exe `
             --title "Shellmate ${{ github.ref_name }}" `
             --notes-from-tag
