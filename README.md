@@ -81,10 +81,7 @@ wingetcreate update EliasWyss.Shellmate --version 1.0.2 --urls https://github.co
 ## Changelog
 
 ### next session
-- [x] Setup-Assistent: API Key beim 1. Start abfragen und in Config-Datei speichern (Etappe 3)
-- [x] Chat-Verlauf, damit Gemini sich an das Gespräch erinnert (Etappe 4)
-- [x] Markdown-Ausgabe im Terminal mit Spectre.Console (Etappe 5)
-- [x] `HTTPS` Transfer
+- [ ] Bewerbung für Winget abschliessen
 
 
 ### 23.10.2026
@@ -96,6 +93,7 @@ wingetcreate update EliasWyss.Shellmate --version 1.0.2 --urls https://github.co
 - [x] Veröffentlichung im Windows-Paketmanager eingereicht (`winget install shellmate`)
 - [x] MIT-Lizenz
 - [x] Automatische Releases mit GitHub Actions
+- [x] ShowWelcome() Update
 
 ### 18.10.2026
 - [x] `AppConfig` (Model + ApiKey) als JSON in `%APPDATA%\Shellmate\config.json`
