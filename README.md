@@ -34,7 +34,8 @@ Beim ersten Start fragt Shellmate nach einem **Gemini API Key**. Den gibt es gra
 
 - **Aktualisieren:** den Installationsbefehl einfach nochmal ausführen
 - **Version anzeigen:** `shellmate --version`
-- ## Shellmate löschen:
+
+## Shellmate löschen:
   ```
   powershell -c "irm https://raw.githubusercontent.com/Elias-Phy-Ja/Lernperiode-2/main/uninstall.ps1 | iex"
   ```
