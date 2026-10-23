@@ -13,6 +13,9 @@
     <Product>Shellmate</Product>
     <Authors>Elias Wyss</Authors>
     <Description>KI-Chatbot im Terminal mit Google Gemini</Description>
+    <Company>Elias Wyss</Company>
+    <Copyright>© 2026 Elias Wyss</Copyright>
+    <RepositoryUrl>https://github.com/Elias-Phy-Ja/Lernperiode-2</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

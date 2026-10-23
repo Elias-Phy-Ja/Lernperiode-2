@@ -25,6 +25,8 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
+      # Ohne Kompression: komprimierte, sich selbst entpackende .exe-Dateien werden von
+      # Virenscannern oft fälschlich als Schadsoftware erkannt.
       - name: shellmate.exe bauen (eine Datei, läuft ohne installiertes .NET)
         shell: pwsh
         run: |
@@ -34,8 +36,6 @@ jobs:
             -r win-x64 `
             --self-contained true `
             -p:PublishSingleFile=true `
-            -p:EnableCompressionInSingleFile=true `
-            -p:IncludeNativeLibrariesForSelfExtract=true `
             -p:Version=$version `
             -o out
 
