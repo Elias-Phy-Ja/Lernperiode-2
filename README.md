@@ -74,7 +74,7 @@ wingetcreate update EliasWyss.Shellmate --version 1.0.2 --urls https://github.co
 
 - KI Chat Bot im Terminal
 - Verschlüsselter HTTPS Verkehr
-- Komplette Markedown Library im Terminal verfügbar für Formatierungen.
+- Komplette Markdown im Terminal verfügbar für Formatierungen.
 - (ev. GUI wie Winforms)
 
 
@@ -84,7 +84,7 @@ wingetcreate update EliasWyss.Shellmate --version 1.0.2 --urls https://github.co
 - [x] Setup-Assistent: API Key beim 1. Start abfragen und in Config-Datei speichern (Etappe 3)
 - [x] Chat-Verlauf, damit Gemini sich an das Gespräch erinnert (Etappe 4)
 - [x] Markdown-Ausgabe im Terminal mit Spectre.Console (Etappe 5)
-- [ ] `HTTPS` Transfer
+- [x] `HTTPS` Transfer
 
 
 ### 23.10.2026
