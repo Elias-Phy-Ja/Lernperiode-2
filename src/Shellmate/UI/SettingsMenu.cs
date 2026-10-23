@@ -46,7 +46,7 @@ public static class SettingsMenu
             }
         }
 
-        CommandHandler.RedrawChat(gemini); // Chat wiederherstellen
+        CommandHandler.RedrawChat(gemini, config); // Chat wiederherstellen
     }
 
     private static void ShowMenu(AppConfig config, string? statusMessage)

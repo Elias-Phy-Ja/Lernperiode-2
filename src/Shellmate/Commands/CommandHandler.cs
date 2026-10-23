@@ -1,6 +1,7 @@
 using Shellmate.Models;
 using Shellmate.Services;
 using Shellmate.UI;
+using Spectre.Console;
 
 namespace Shellmate.Commands;
 
@@ -32,7 +33,7 @@ public class CommandHandler
         }
         else if (loweredCommand == "/clear")
         {
-            ClearChat(gemini);
+            ClearChat(gemini, config);
         }
         else
         {
@@ -44,11 +45,33 @@ public class CommandHandler
         return true; // Gibt true zurück, um isRunning in Programm.cs zu setzen
     }
 
-    public static void ShowWelcome()
+    public static void ShowWelcome(AppConfig? config = null)
     {
+        string model = config?.Model ?? "Setup nötig";
+        string qualle = "[deepskyblue2]  ▄▀▀▀▀▀▀▀▄[/]\n" + "[deepskyblue2]  █ •   • █[/]\n" + "[deepskyblue2]  ▀▄▄▄▄▄▄▄▀[/]\n" + "[deepskyblue4]   ╎ ┊ ┊ ╎[/]\n" + "[deepskyblue4]   ┊ ╎ ╎ ┊[/]";
+        // Version wie bei "shellmate --version" (z.B. 1.0.1)
+        string version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "?";
+
+        // die 4 Info-Zeilen rechts neben der Qualle
+        string infos =
+            "[bold deepskyblue2]Willkommen bei Shellmate[/] [grey]v" + version + "[/]\n" +
+            "[grey]Modell:[/] " + Markup.Escape(model) + "\n" +
+            "[grey]" + Markup.Escape(Environment.CurrentDirectory) + "[/]\n" +
+            "[grey]/help für alle Befehle[/]";
+
+        // Grid = unsichtbare Tabelle mit 2 Spalten: links die Qualle, rechts die Infos
+        Grid grid = new Grid();
+        grid.AddColumn(new GridColumn { Padding = new Padding(0, 0, 4, 0) }); // Abstand rechts (links, oben, rechts, unten)
+        grid.AddColumn();
+        grid.AddRow(new Markup(qualle), new Markup(infos));
+
+        // Rahmen um alles, wie bei Claude Code
+        Panel panel = new Panel(grid)
+            .RoundedBorder()                   // runde Ecken
+            .BorderColor(Color.DeepSkyBlue2);  // gleiches Blau wie die Qualle
+
         Console.WriteLine();
-        Console.WriteLine("Herzlich willkommen bei Shellmate!");
-        Console.WriteLine("Mit /help können Sie sich die verfügbaren Befehle anzeigen lassen.");
+        AnsiConsole.Write(panel);
         Console.WriteLine();
     }
 
@@ -109,7 +132,7 @@ public class CommandHandler
         Console.WriteLine();
     }
 
-    public static void ClearChat(GeminiService? gemini)
+    public static void ClearChat(GeminiService? gemini, AppConfig? config)
     {
         if (gemini == null) // im Setup Wizard gibt es noch kein gemini
         {
@@ -121,15 +144,15 @@ public class CommandHandler
         {
             gemini.ClearHistory(); // Gemini vergisst alles
             Console.Clear();       // Terminal leeren
-            ShowWelcome();         // wie beim Start
+            ShowWelcome(config);   // wie beim Start
         }
     }
 
     // Zeichnet den ganzen Chat aus dem Verlauf neu, als wäre man nie weg gewesen
-    public static void RedrawChat(GeminiService gemini)
+    public static void RedrawChat(GeminiService gemini, AppConfig config)
     {
         Console.Clear();
-        ShowWelcome();
+        ShowWelcome(config);
 
         foreach (ChatMessage message in gemini.History) // jede Nachricht einzeln durchgehen
         {

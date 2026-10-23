@@ -14,12 +14,11 @@ if (args.Contains("--version") || args.Contains("-v"))
     return;
 }
 
-Console.Clear();
-CommandHandler.ShowWelcome();
-
-
 // Config laden, beim ersten Start den Setup Wizard starten
 AppConfig? config = ConfigService.LoadConfig();
+
+Console.Clear();
+CommandHandler.ShowWelcome(config); // Begrüssung mit Qualle, Version und Modell
 
 if (config == null || string.IsNullOrWhiteSpace(config.ApiKey)) // Keine Config oder kein Key
 {
