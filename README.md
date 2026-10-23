@@ -30,6 +30,7 @@ Bei 2.+ Aktivierung soll man direkt in den Chat kommen und durch `/Commands` spe
 - [x] Setup-Assistent: API Key beim 1. Start abfragen und in Config-Datei speichern (Etappe 3)
 - [x] Chat-Verlauf, damit Gemini sich an das Gespräch erinnert (Etappe 4)
 - [ ] Markdown-Ausgabe im Terminal mit Spectre.Console (Etappe 5)
+- [ ] `HTTPS` Transfer
 
 
 ### 18.10.2026
