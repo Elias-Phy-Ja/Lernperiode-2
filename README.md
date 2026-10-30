@@ -75,7 +75,6 @@ wingetcreate update EliasWyss.Shellmate --version 1.0.2 --urls https://github.co
 - KI Chat Bot im Terminal
 - Verschlüsselter HTTPS Verkehr
 - Komplette Markdown im Terminal verfügbar für Formatierungen.
-- (ev. GUI wie Winforms)
 
 
 ## Changelog
@@ -83,6 +82,10 @@ wingetcreate update EliasWyss.Shellmate --version 1.0.2 --urls https://github.co
 ### next session
 - [ ] Bewerbung für Winget abschliessen
 
+### 30.10.2026
+- [x] Bewerbung für Winget abgeschlossen.
+- [x] Pull Request läuft --> [Microsoft Winget](https://github.com/microsoft/winget-pkgs/pull/460224)
+- [x] Nächstes Projekt überlegt --> [mini Nmap](https://github.com/Elias-Phy-Ja/mini-Nmap/)
 
 ### 23.10.2026
 - [x] Markdown-Ausgabe mit Spectre.Console: Überschriften, fett/kursiv, Listen, Codeblöcke im Rahmen, Tabellen (`MarkdownRenderer`)
